@@ -1,0 +1,237 @@
+:root {
+    --aman-bg: #e1fbc4;
+    --aman-text: #4f7952;
+    --waspada-bg: #fef3c7;
+    --waspada-text: #92400e;
+    --bahaya-bg: #fee2e2;
+    --bahaya-text: #b91c1c;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    /* Perubahan di bawah ini */
+    font-size: 2rem;      /* Ukuran lebih besar (sebelumnya sekitar 1.3rem) */
+    font-weight: 700;      /* Membuat tulisan lebih tebal/bold */
+    color: #4f7952;        /* Warna hijau gelap khas desain Anda */
+    letter-spacing: -0.5px; /* Opsional: merapatkan sedikit huruf agar terlihat modern */
+}
+
+.logo-img {
+    width: 100px;           /* Ukuran gambar logo ikut disesuaikan agar seimbang */
+    height: 100px;
+    object-fit: contain;
+
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+    background-color: #fff;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+}
+
+.container {
+    width: 100%;
+    max-width: 1100px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.btn-hubungi {
+    background: #e1fbc4;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-weight: 600;
+    cursor: pointer;
+    color: #4f7952;
+}
+
+/* Layout Utama */
+.content-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+    flex-grow: 1;
+    margin-top: 20px;
+}
+
+.label-top {
+    text-align: center;
+    margin-bottom: 15px;
+    font-weight: 600;
+    background: #e1fbc4;
+    padding: 5px 15px;
+    border-radius: 10px;
+    display: inline-block;
+}
+
+.water-level-section {
+    text-align: center;
+}
+
+/* Animasi Ombak dalam Lingkaran */
+.circle-container {
+    width: 280px;
+    height: 280px;
+    border: 2px solid #333;
+    border-radius: 50%;
+    position: relative;
+    overflow: hidden;
+    background: #fff;
+}
+
+.wave {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 50%;
+    transition: height 1s ease, background-color 0.5s ease;
+}
+
+/* Pseudo-elements untuk efek gerak ombak */
+.wave::before,
+.wave::after {
+    content: "";
+    position: absolute;
+    width: 200%;
+    height: 200%;
+    top: -165%;
+    left: -50%;
+    border-radius: 40%;
+}
+
+.wave::before {
+    background: rgba(255, 255, 255, 0.4);
+    animation: rotate 8s linear infinite;
+}
+
+.wave::after {
+    background: rgba(255, 255, 255, 0.6);
+    animation: rotate 5s linear infinite;
+    border-radius: 35%;
+}
+
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Warna Air Dinamis */
+.wave.aman {
+    background-color: #4f7952;
+}
+
+.wave.waspada {
+    background-color: #d9a106;
+}
+
+.wave.bahaya {
+    background-color: #dc2626;
+}
+
+/* Status Box */
+.status-box {
+    padding: 10px 50px;
+    border-radius: 15px;
+    text-align: center;
+    margin-bottom: 20px;
+    transition: all 0.5s ease;
+}
+
+.status-aman {
+    background-color: var(--aman-bg);
+    color: var(--aman-text);
+}
+
+.status-waspada {
+    background-color: var(--waspada-bg);
+    color: var(--waspada-text);
+}
+
+.status-bahaya {
+    background-color: var(--bahaya-bg);
+    color: var(--bahaya-text);
+}
+
+/* Details Card */
+.details-card {
+    background: #E4FFB7;
+    padding: 25px;
+    border-radius: 20px;
+    width: 100%;
+    min-width: 300px;
+}
+
+.detail-item {
+    display: flex;
+    justify-content: space-between;
+    margin: 12px 0;
+    font-size: 1.1rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    padding-bottom: 5px;
+}
+
+/* Gaya untuk status kontak sensor */
+#kontak-status.terkena-air {
+    color: #dc2626;
+    background: #fee2e2;
+    padding: 2px 8px;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+#kontak-status.kering {
+    color: #4f7952;
+    background: #fff;
+    padding: 2px 8px;
+    border-radius: 5px;
+}
+
+footer {
+    text-align: center;
+    font-size: 0.85rem;
+    padding: 40px 0;
+    color: #888;
+}
+
+/* RESPONSIVE DESKTOP & TABLET */
+@media (min-width: 768px) {
+    .content-wrapper {
+        flex-direction: row;
+        justify-content: center;
+        gap: 80px;
+    }
+
+    .circle-container {
+        width: 380px;
+        height: 380px;
+    }
+
+    .details-card {
+        width: 450px;
+    }
+}

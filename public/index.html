@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cempathyc - Monitoring Air</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <img src="Logo.png" alt="Logo Cempathyc" class="logo-img">
+                <span>Cempathyc</span>
+            </div>
+            <a href="https://www.instagram.com/mkbtbd36.empathy/" target="_blank" style="text-decoration: none;">
+                <button class="btn-hubungi">Hubungi Kami</button>
+            </a>
+        </header>
+
+        <main class="content-wrapper">
+            <div class="water-level-section">
+                <p class="label-top">Ketinggian Air</p>
+                <div class="circle-container">
+                    <div class="wave" id="wave-bg"></div>
+                    <div class="text-overlay">
+                        <h1 id="water-value">0</h1>
+                        <span>Centimeter</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="status-section">
+                <div id="status-box" class="status-box status-aman">
+                    <p>Status</p>
+                    <h2 id="status-text">Memuat...</h2>
+                </div>
+
+                <div class="details-card">
+                    <div class="detail-item">
+                        <span>Suhu</span>
+                        <span>: <b id="temp">28</b> °C</span>
+                    </div>
+                    <div class="detail-item">
+                        <span>Kelembapan</span>
+                        <span>: <b id="humi">75</b> %</span>
+                    </div>
+                    <div class="detail-item">
+                        <span>Kecepatan Angin</span>
+                        <span>: <b id="wind">12</b> km/jam</span>
+                    </div>
+                    <div class="detail-item">
+                        <span>Cuaca</span>
+                        <span>: <b id="cuaca">-</b></span>
+                    </div>
+                    <div class="detail-item">
+                        <span>Sensor Kontak</span>
+                        <span>: <b id="kontak-status">-</b></span>
+                    </div>
+                    <div class="detail-item">
+                        <span>Waktu Update</span>
+                        <span>: <small id="waktu-update">-</small></span>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            Tim Cempathyc - Universitas Lambung Mangkurat
+        </footer>
+    </div>
+
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>
