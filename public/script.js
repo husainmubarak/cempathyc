@@ -1,5 +1,5 @@
 // Ganti URL ini dengan alamat IP/Domain server Node.js Anda
-const socket = io("http://localhost:3000"); 
+const socket = io(); 
 
 // Fungsi Utama Update UI
 function updateUI(data) {

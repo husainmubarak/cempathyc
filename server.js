@@ -81,6 +81,14 @@ async function getPrakiraanCuaca() {
     }
 }
 
+// Beritahu Express untuk melayani file di folder 'public'
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Kirim file index.html saat akses halaman utama
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
 // =================================================================================
 // ENDPOINT UNTUK ESP32 (POST) - LOGIKA UTAMA
 // =================================================================================
