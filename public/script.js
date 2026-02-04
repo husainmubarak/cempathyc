@@ -13,7 +13,7 @@ function updateUI(data) {
 
     // 2. Logika Sensor Kontak (Water Level Sensor)
     const kontakEl = document.getElementById('kontak-status');
-    if (data.kontak === 1 || data.kontak === true) {
+    if (data.kontak === 1) {
         kontakEl.innerText = "TERKENA AIR";
         kontakEl.className = "terkena-air";
     } else {
@@ -45,8 +45,8 @@ function updateUI(data) {
         waveEl.classList.add("bahaya");
     }
 
-    // 4. Update Tinggi Animasi Air (Max 400cm)
-    let heightPercent = (data.kedalaman / 400) * 100;
+    // 4. Update Tinggi Animasi Air (Max 300cm)
+    let heightPercent = (data.kedalaman / 300) * 100;
     waveEl.style.height = (heightPercent > 100 ? 100 : heightPercent) + "%";
 }
 

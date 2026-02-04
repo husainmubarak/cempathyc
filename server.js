@@ -19,8 +19,7 @@ const bot = new TelegramBot(token, {polling: true});
 const chatId = process.env.TELEGRAM_CHAT_ID; 
 
 // --- KONFIGURASI BMKG ---
-// Ganti dengan kode wilayah ADM4 (Kelurahan/Desa) lokasi sensor Anda
-const KODE_WILAYAH_BMKG = '31.71.03.1001'; 
+const KODE_WILAYAH_BMKG = '63.72.03.1004'; 
 const URL_BMKG = `https://api.bmkg.go.id/publik/prakiraan-cuaca?adm4=${KODE_WILAYAH_BMKG}`;
 const MIN_KEDALAMAN_BAHAYA = 300; // cm
 const MIN_KEDALAMAN_WASPADA = 250; // cm
@@ -32,6 +31,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // --- KONFIGURASI DATABASE ---
 const db = mysql.createPool({
     host: process.env.DB_HOST,
+    port: process.env.DB_PORT,
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME
@@ -63,17 +63,16 @@ async function getPrakiraanCuaca() {
         // Data prakiraan terdekat (objek pertama dalam array)
         const cuacaTerdekat = prakiraanArray[0]; 
         
-        console.log('--- Data Cuaca Ditemukan:', cuacaTerdekat.weather_desc_en);
+        console.log('--- Data Cuaca Ditemukan:', cuacaTerdekat.weather_desc);
         
         return {
             waktu_prakiraan: cuacaTerdekat.local_datetime, // Gunakan waktu lokal
-            cuaca_terdekat: cuacaTerdekat.weather_desc_en,
+            cuaca_terdekat: cuacaTerdekat.weather_desc,
             suhu_terdekat: cuacaTerdekat.t, 
             kelembaban_terdekat: cuacaTerdekat.hu, 
             ws_terdekat: cuacaTerdekat.ws, 
-            tcc_terdekat: cuacaTerdekat.tcc, 
             // Tentukan apakah hujan (kode weather 60, 61, 63, 80, 95, 97, dll.)
-            is_hujan_deras: cuacaTerdekat.weather_desc_en.includes('Rain') || cuacaTerdekat.weather_desc_en.includes('Thunder')
+            is_hujan_deras: cuacaTerdekat.weather_desc.includes('Hujan') || cuacaTerdekat.weather_desc.includes('Badai')
         };
 
     } catch (error) {
@@ -92,8 +91,9 @@ app.post('/api/data', async (req, res) => {
     let pesanTelegram = null;
     let kedalaman = 300 - jarak; // Konversi jarak ke kedalaman air (cm)
 
+
     // --- Langkah 1: Tentukan Status Sensor Awal ---
-    if (kontak_air == 1 || kedalaman >= MIN_KEDALAMAN_BAHAYA) {
+    if (kontak_air >= 1 && kedalaman >= MIN_KEDALAMAN_BAHAYA) {
         status = 'BAHAYA';
     } else if (kedalaman > MIN_KEDALAMAN_WASPADA) {
         status = 'WASPADA';
@@ -107,14 +107,13 @@ app.post('/api/data', async (req, res) => {
     const suhu_terdekat = dataCuaca?.suhu_terdekat || null;
     const kelembaban_terdekat = dataCuaca?.kelembaban_terdekat || null;
     const ws_terdekat = dataCuaca?.ws_terdekat || null;
-    const tcc_terdekat = dataCuaca?.tcc_terdekat || null;
     const waktu_prakiraan = dataCuaca?.waktu_prakiraan || null;
 
     // --- Langkah 3: Gabungkan Data & Simpan ke Tabel Agregasi ---
-    const queryAgregasi = `INSERT INTO data_agregasi (kedalaman, sensor_kontak, status_alert, cuaca_terdekat, suhu_terdekat, kelembaban_terdekat, ws_terdekat, tcc_terdekat) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
+    const queryAgregasi = `INSERT INTO data (kedalaman, sensor_kontak, status_alert, cuaca_terdekat, suhu_terdekat, kelembaban_terdekat, ws_terdekat) VALUES (?, ?, ?, ?, ?, ?, ?)`;
 
     db.query(queryAgregasi, 
-        [kedalaman, kontak_air, status, cuaca_terdekat, suhu_terdekat, kelembaban_terdekat, ws_terdekat, tcc_terdekat], 
+        [kedalaman, kontak_air, status, cuaca_terdekat, suhu_terdekat, kelembaban_terdekat, ws_terdekat], 
         (err, result) => {
             if (err) {
                 console.error('Database Agregasi Error:', err);
@@ -134,11 +133,7 @@ app.post('/api/data', async (req, res) => {
         suhu: suhu_terdekat,
         kelembaban: kelembaban_terdekat,
         kecepatan_angin: ws_terdekat,
-        tutupan_awan: tcc_terdekat,
         waktu_prakiraan: waktu_prakiraan,
-        
-        // Tambahan
-        is_hujan_deras: dataCuaca?.is_hujan_deras || false // Untuk logika di frontend
     };
     io.emit('sensor_update', dataSocket); // <-- Klien menerima data 
     
