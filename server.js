@@ -30,11 +30,13 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // --- KONFIGURASI DATABASE ---
 const db = mysql.createPool({
-    host: process.env.DB_HOST,
-    port: process.env.DB_PORT,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME
+    host: process.env.DB_HOST || process.env.MYSQLHOST,
+    port: process.env.DB_PORT || process.env.MYSQLPORT,
+    user: process.env.DB_USER || process.env.MYSQLUSER,
+    password: process.env.DB_PASSWORD || process.env.MYSQLPASSWORD,
+    database: process.env.DB_NAME || process.env.MYSQLDATABASE,
+    connectionLimit: 10,
+    enableKeepAlive: true
 });
 
 let statusTerakhir = 'AMAN'; 
@@ -176,8 +178,10 @@ app.post('/api/data', async (req, res) => {
 // SERVER START
 // =================================================================================
 
-server.listen(3000, () => {
-    console.log('Server berjalan di port 3000');
+const PORT = process.env.PORT || 3000;
+
+server.listen(PORT, () => {
+    console.log('Server berjalan di port ' + PORT);
     console.log('Pastikan ESP32 mengirim data ke: http://localhost:3000/api/data');
     console.log("halaman dashboard http://localhost:3000");
 });
