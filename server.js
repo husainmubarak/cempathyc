@@ -103,7 +103,7 @@ app.post('/api/data', async (req, res) => {
 
 
     // --- Langkah 1: Tentukan Status Sensor Awal ---
-    if (kontak_air >= 1 && kedalaman >= MIN_KEDALAMAN_BAHAYA) {
+    if (kontak_air >= 1 || kedalaman >= MIN_KEDALAMAN_BAHAYA) {
         status = 'BAHAYA';
     } else if (kedalaman > MIN_KEDALAMAN_WASPADA) {
         status = 'WASPADA';
