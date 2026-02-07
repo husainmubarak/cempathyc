@@ -92,6 +92,39 @@ app.get('/', (req, res) => {
 });
 
 // =================================================================================
+// ENDPOINT UNTUK FRONTEND (GET DATA TERAKHIR)
+// =================================================================================
+app.get('/api/data/latest', (req, res) => {
+    // Mengambil 1 data terbaru berdasarkan ID atau waktu (sesuaikan nama kolom ID Anda)
+    const query = `SELECT * FROM data ORDER BY id DESC LIMIT 1`;
+    
+    db.query(query, (err, results) => {
+        if (err) {
+            console.error('Database Error:', err);
+            return res.status(500).json({ error: 'Internal Server Error' });
+        }
+        
+        if (results.length > 0) {
+            const data = results[0];
+            // Format data agar strukturnya sama dengan yang diharapkan updateUI di frontend
+            const formattedData = {
+                kedalaman: data.kedalaman,
+                kontak: data.sensor_kontak,
+                status: data.status_alert,
+                waktu: new Date(data.created_at).toLocaleTimeString(), // Sesuaikan nama kolom waktu jika berbeda
+                cuaca_desc: data.cuaca_terdekat,
+                suhu: data.suhu_terdekat,
+                kelembaban: data.kelembaban_terdekat,
+                kecepatan_angin: data.ws_terdekat
+            };
+            res.json(formattedData);
+        } else {
+            res.status(404).json({ message: 'Belum ada data di database' });
+        }
+    });
+});
+
+// =================================================================================
 // ENDPOINT UNTUK ESP32 (POST) - LOGIKA UTAMA
 // =================================================================================
 

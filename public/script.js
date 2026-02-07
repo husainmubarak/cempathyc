@@ -1,6 +1,24 @@
 // Ganti URL ini dengan alamat IP/Domain server Node.js Anda
 const socket = io(); 
 
+// --- TAMBAHAN: FUNGSI AMBIL DATA AWAL ---
+async function fetchLatestData() {
+    try {
+        const response = await fetch('/api/data/latest');
+        if (!response.ok) throw new Error('Gagal mengambil data awal');
+        
+        const data = await response.json();
+        console.log("Data awal dimuat:", data);
+        updateUI(data); // Panggil fungsi yang sudah ada untuk mengisi UI
+    } catch (error) {
+        console.error("Error fetching latest data:", error);
+        document.getElementById('status-text').innerText = "DATA KOSONG";
+    }
+}
+
+// Jalankan fungsi ini saat script pertama kali dieksekusi
+fetchLatestData();
+
 // Fungsi Utama Update UI
 function updateUI(data) {
     // 1. Update Angka & Teks Dasar
