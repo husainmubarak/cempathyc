@@ -21,8 +21,8 @@ const chatId = process.env.TELEGRAM_CHAT_ID;
 // --- KONFIGURASI BMKG ---
 const KODE_WILAYAH_BMKG = '63.72.03.1004'; 
 const URL_BMKG = `https://api.bmkg.go.id/publik/prakiraan-cuaca?adm4=${KODE_WILAYAH_BMKG}`;
-const MIN_KEDALAMAN_BAHAYA = 300; // cm
-const MIN_KEDALAMAN_WASPADA = 250; // cm
+const MIN_KEDALAMAN_BAHAYA = 300; 
+const MIN_KEDALAMAN_WASPADA = 250; 
 
 app.use(cors());
 app.use(bodyParser.json());
