@@ -111,7 +111,7 @@ app.get('/api/data/latest', (req, res) => {
                 kedalaman: data.kedalaman,
                 kontak: data.sensor_kontak,
                 status: data.status_alert,
-                waktu: new Date(data.created_at).toLocaleTimeString(), // Sesuaikan nama kolom waktu jika berbeda
+                waktu: data.timestamp, // Sesuaikan nama kolom waktu jika berbeda
                 cuaca_desc: data.cuaca_terdekat,
                 suhu: data.suhu_terdekat,
                 kelembaban: data.kelembaban_terdekat,

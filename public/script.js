@@ -22,10 +22,10 @@ fetchLatestData();
 // Fungsi Utama Update UI
 function updateUI(data) {
     // 1. Update Angka & Teks Dasar
-    document.getElementById('water-value').innerText = data.kedalaman;
-    document.getElementById('temp').innerText = data.suhu;
-    document.getElementById('humi').innerText = data.kelembaban;
-    document.getElementById('wind').innerText = data.kecepatan_angin;
+    document.getElementById('water-value').innerText = Number(data.kedalaman);
+    document.getElementById('temp').innerText = Number(data.suhu);
+    document.getElementById('humi').innerText = Number(data.kelembaban);
+    document.getElementById('wind').innerText = Number(data.kecepatan_angin);
     document.getElementById('cuaca').innerText = data.cuaca_desc;
     document.getElementById('waktu-update').innerText = data.waktu;
 
